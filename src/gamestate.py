@@ -1,29 +1,37 @@
 import random
 from player import Player
+import json
+
+from typing import Union
 
 
 class GameState:
-    def __init__(self, num_rounds: int, players: list[Player]) -> None:
+    def __init__(self, num_rounds: int, players: list[Player], gamestate_json: Union[str, dict] = None) -> None:
         """Initialize the game state.
 
         Args:
             num_rounds (int): number of rounds
             *entries(Entry): list of entries
         """
-        self.current_round = 0
-        self.num_rounds = num_rounds
-        self.players: list[Player] = []
-        for player in players:
-            self.players.append(player)
-        self.__current_player_index = 0
-        if not self.players:
-            raise ValueError("No players")
-        if len(self.players) < 2:
-            raise ValueError("Not enough players")
-        self.current_player = self.players[self.__current_player_index]
-        self.bank: int = 0
-        self.current_roll: tuple = (0, 0)
-        self.current_turn = 0
+        if gamestate_json is not None and isinstance(gamestate_json, str):
+            gamestate_json = json.loads(gamestate_json)
+        elif gamestate_json is not None and isinstance(gamestate_json, dict):
+            gamestate_json = json.dumps(gamestate_json)
+        else:
+            self.current_round = 0
+            self.num_rounds = num_rounds
+            self.players: list[Player] = []
+            for player in players:
+                self.players.append(player)
+            self.__current_player_index = 0
+            if not self.players:
+                raise ValueError("No players")
+            if len(self.players) < 2:
+                raise ValueError("Not enough players")
+            self.current_player = self.players[self.__current_player_index]
+            self.bank: int = 0
+            self.current_roll: tuple = (0, 0)
+            self.current_turn = 0
 
     def __str__(self) -> str:
         ret_str = f"Round: {self.current_round} of {self.num_rounds}\n"
@@ -72,3 +80,30 @@ class GameState:
         self.current_roll = (dice1, dice2)
         self.current_turn += 1
         return self.current_roll
+
+    def from_json(json_str: str) -> "GameState":
+        return GameState.from_dict(json.loads(json_str))
+
+    def from_dict(self, gamestate_dict: dict) -> "GameState":
+        self.current_round = 0
+        self.num_rounds = gamestate_dict.get("num_rounds", 0)
+        self.__current_player_index = gamestate_dict.get("current_player_index", 0)
+
+        players = gamestate_dict.get("players", [])
+        for player in players:
+            self.players.append(Player(player))
+        if not self.players:
+            raise ValueError("No players")
+        if len(self.players) < 2:
+            raise ValueError("Not enough players")
+        self.current_player = gamestate_dict.get("current_player", None)
+        self.bank: int = gamestate_dict.get("bank", 0)
+        self.current_roll: tuple = tuple(gamestate_dict.get("current_roll", (0, 0)))
+        self.current_turn = gamestate_dict.get("current_turn", 0)
+
+
+class GameStateENCODER(json.JSONEncoder):
+    def default(self, obj):
+        if hasattr(obj, "__dict__"):
+            return obj.__dict__
+        return super().default(self, obj)
