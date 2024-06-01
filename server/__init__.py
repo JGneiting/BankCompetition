@@ -8,4 +8,4 @@ socketio = SocketIO(app)
 import server.Routes as routes
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    socketio.run(app)
