@@ -6,12 +6,14 @@ from typing import Union
 
 
 class GameState:
-    def __init__(self, num_rounds: int, players: list[Player], gamestate_json: Union[str, dict] = None) -> None:
+    def __init__(self, num_rounds: int = 0, players: list[Player] = [],
+                 gamestate_json: Union[str, dict] = None) -> None:
         """Initialize the game state.
 
         Args:
             num_rounds (int): number of rounds
-            *entries(Entry): list of entries
+            players (list[Player]): list of players
+            gamestate_json (Union[str, dict], optional): game state json. Defaults to None.
         """
         if gamestate_json is not None and isinstance(gamestate_json, str):
             gamestate_json = json.loads(gamestate_json)
