@@ -29,7 +29,7 @@ class Entry(ABC):
             raise ValueError("Function must accept exactly one parameter besides 'self'.")
 
         params = list(sig.parameters.values())
-        if params[1].annotation is not GameState:
+        if type(params[1].annotation) is not type(GameState):
             raise TypeError("Function parameter must be of type 'GameState'.")
 
         if sig.return_annotation is not bool:
