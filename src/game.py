@@ -1,86 +1,34 @@
 import random
 import logging
+import copy
 
 from entry import Entry
 from player import Player
+from gamestate import GameState
 
 
 log = logging.getLogger(__name__)
 
 
-class GameState:
-    def __init__(self, num_rounds: int, *entries: Entry) -> None:
-        """Initialize the game state.
-
-        Args:
-            num_rounds (int): number of rounds
-            *entries(Entry): list of entries
-        """
-        self.current_round = 0
-        self.__current_turn = 0
-        self.num_rounds = num_rounds
-        self.__entries: list[Entry] = [].clear()
-        self.players: list[Player] = [].clear()
-        self.__current_player_index = 0
-        for entry in entries:
-            if not entry.is_valid():
-                log.warning("Entry failed validation: %s", entry)
-            else:
-                log.info("Entry passed validation: %s", entry)
-                self.__entries.append(entry)
-                self.players.append(Player(entry.name))
-
-        if len(self.players) < 2:
-            raise ValueError("Not enough players")
-        self.current_player = self.players[self.__current_player_index]
-        self.bank: int = 0
-
-    def __str__(self) -> str:
-        ret_str = f"Round: {self.current_round} of {self.num_rounds}\n"
-        ret_str += "Bank: " + str(self.bank) + "\n"
-        ret_str += "Current player: " + self.current_player.name + "\n"
-        for player in self.players:
-            ret_str += player.__str__() + "\n"
-        return ret_str
-
-    def __repr__(self) -> str:
-        return self.__str__()
-
-    def next_round(self) -> None:
-        self.bank = 0
-        self.current_round += 1
-        if self.current_round >= self.num_rounds:
-            return
-        self.__current_turn = 0
-        for player in self.players:
-            player.unbank()
-        self.advance_player()
-
-    def next_turn(self) -> None:
-        self.__current_turn += 1
-        self.advance_player()
-
-    def advance_player(self) -> None:
-        if all(self.players):
-            self.next_round()
-        self.__current_player_index = (
-            self.__current_player_index + 1
-        ) % len(self.players)
-        self.current_player = self.players[self.__current_player_index]
-        if self.current_player.is_banked:
-            self.advance_player()
-
-    def update_bank(self, amount: int) -> None:
-        self.bank += amount
-    
-    def poll(self) -> list[bool]:
-        for entry in self.__entries:
-            
-
-
 class Game:
     def __init__(self, num_rounds: int, *entries: Entry) -> None:
-        self.state = GameState(num_rounds, *entries)
+        """Initialize the game state."""
+        self.__entries: list[Entry] = [].clear()
+        self.state: GameState = None
+        players = []
+        for entry in entries:
+            try:
+                entry.is_valid()
+                self.__entries.append(entry)
+                players.append(Player(entry.name))
+                log.info("Entry passed validation: %s", entry)
+                log.info("Player added: %s", entry.name)
+            except Exception as e:
+                log.warning("Entry failed validation: %s", entry, exc_info=e)
+        try:
+            self.state = GameState(num_rounds, players)
+        except Exception as e:
+            log.warning("Failed to initialize game state", exc_info=e)
 
     def __str__(self) -> str:
         return str(self.state)
@@ -106,6 +54,28 @@ class Game:
 
     def next_round(self) -> None:
         self.state.next_round()
-    
-    def poll(self) -> None:
 
+    def poll(self) -> None:
+        if all(self.state.players):
+            self.state.next_round()
+            return
+        poll_again = False
+        for i, player in enumerate(self.state.players):
+            if not player.is_banked:
+                if self.__entries[i].func(copy.deepcopy(self.state)):
+                    self.state.players[i].bank(self.state.bank)
+                    poll_again = True
+        if poll_again:
+            self.poll()
+
+    def run(self) -> None:
+        while self.state.current_round < self.state.num_rounds:
+            self.roll()
+            self.poll()
+
+        results = self.state.get_results()
+        print(f"{results[0].name} wins with {results[0].score} points!")
+        print("Scores:")
+        for player in results:
+            print(f"{player.name}: {player.score}")
+        # TODO: export results to a file
