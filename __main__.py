@@ -20,8 +20,9 @@ if __name__ == "__main__":
     # search the entries directory for python files. Try to import a "main" function
     entries = []
     wins = {}
+    exclude = ["__init__.py", "test.py"]
     for entry_file in os.listdir("src/entries"):
-        if entry_file.endswith(".py") and entry_file != "__init__.py":
+        if entry_file.endswith(".py") and entry_file not in exclude:
             try:
                 # Import the module dynamically
                 module_name = entry_file[:-3]  # Strip ".py" extension

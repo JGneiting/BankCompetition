@@ -5,20 +5,19 @@ from entry import Entry
 class TestEntry(Entry):
     def __init__(self, name: str) -> None:
         super().__init__(name)
+        self.number_of_doubles = 0
+        self.threshold = 7
         self.current_round = 0
-        self.max_threshold = 600
-        self.min_threshold = 100
         self.winning_at_start = None
 
     def bank(self, state: GameState) -> bool:
         if state.current_round != self.current_round:
             self.current_round = state.current_round
-            self.winning_at_start = None
+            self.number_of_doubles = 0
 
         if self.winning_at_start is None:
             self.winning_at_start = self.am_winning(state)
-        if state.current_turn < 3:
-            return False
+
         if self.is_last_round(state):
             if self.am_winning(state):
                 return False
@@ -36,10 +35,17 @@ class TestEntry(Entry):
             else:
                 return False
         else:
-            threshold = ((self.max_threshold - self.min_threshold) / (state.num_rounds - 3) *
-                         self.current_round) + self.min_threshold
-            if state.bank >= threshold:
+            if state.current_turn > 3:
+                if self.is_doubles(state):
+                    self.number_of_doubles += 1
+            if self.number_of_doubles >= self.threshold:
                 return True
+
+        return False
+
+    def is_doubles(self, state: GameState) -> bool:
+        if state.current_roll[0] == state.current_roll[1]:
+            return True
         return False
 
     def is_last_round(self, state: GameState) -> bool:

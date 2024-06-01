@@ -6,14 +6,11 @@ class TestEntry(Entry):
     def __init__(self, name: str) -> None:
         super().__init__(name)
         self.current_round = 0
-        self.curr_turn = 0
         self.threshold = 17
 
     def bank(self, state: GameState) -> bool:
         if state.current_round != self.current_round:
             self.current_round = state.current_round
-            self.curr_turn = 0
-        self.curr_turn += 1
         if self.current_round == state.num_rounds - 2:
             if self.am_winning(state):
                 if any(player.is_banked for player in state.players):
@@ -21,7 +18,7 @@ class TestEntry(Entry):
                 else:
                     return False
             else:
-                if self.curr_turn == self.threshold:
+                if state.current_turn == self.threshold:
                     return True
         elif self.current_round == state.num_rounds - 1:
             if self.am_winning(state):
@@ -30,9 +27,9 @@ class TestEntry(Entry):
                 else:
                     return False
             else:
-                if self.curr_turn >= self.threshold and state.bank >= 300:
+                if state.current_turn >= self.threshold and state.bank >= 300:
                     return True
-        elif self.curr_turn == self.threshold:
+        elif state.current_turn == self.threshold:
             return True
         else:
             return False
