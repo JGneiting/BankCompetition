@@ -13,7 +13,8 @@ log = logging.getLogger(__name__)
 class Game:
     def __init__(self, num_rounds: int, *entries: Entry) -> None:
         """Initialize the game state."""
-        self.__entries: list[Entry] = [].clear()
+        self.__entries: list[Entry] = []
+        self.__current_turn = 0
         self.state: GameState = None
         players = []
         for entry in entries:
@@ -37,9 +38,10 @@ class Game:
         return self.__str__()
 
     def roll(self) -> None:
+        self.__current_turn += 1
         dice1 = random.randint(1, 6)
         dice2 = random.randint(1, 6)
-        if self.state.__current_turn < 2:
+        if self.__current_turn < 4:
             if dice1 + dice2 == 7:
                 self.state.update_bank(70)
             else:
@@ -51,8 +53,10 @@ class Game:
                 self.state.update_bank(self.state.bank)
             else:
                 self.state.update_bank(dice1 + dice2)
+        self.state.advance_player()
 
     def next_round(self) -> None:
+        self.__current_turn = 0
         self.state.next_round()
 
     def poll(self) -> None:
@@ -62,7 +66,7 @@ class Game:
         poll_again = False
         for i, player in enumerate(self.state.players):
             if not player.is_banked:
-                if self.__entries[i].func(copy.deepcopy(self.state)):
+                if self.__entries[i].bank(copy.deepcopy(self.state)):
                     self.state.players[i].bank(self.state.bank)
                     poll_again = True
         if poll_again:

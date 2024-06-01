@@ -10,14 +10,13 @@ class GameState:
             *entries(Entry): list of entries
         """
         self.current_round = 0
-        self.__current_turn = 0
         self.num_rounds = num_rounds
-
-        self.players: list[Player] = [].clear()
+        self.players: list[Player] = []
         for player in players:
             self.players.append(player)
         self.__current_player_index = 0
-
+        if not self.players:
+            raise ValueError("No players")
         if len(self.players) < 2:
             raise ValueError("Not enough players")
         self.current_player = self.players[self.__current_player_index]
@@ -39,18 +38,16 @@ class GameState:
         self.current_round += 1
         if self.current_round >= self.num_rounds:
             return
-        self.__current_turn = 0
         for player in self.players:
             player.unbank()
         self.advance_player()
 
     def next_turn(self) -> None:
-        self.__current_turn += 1
         self.advance_player()
 
     def advance_player(self) -> None:
         if all(self.players):
-            self.next_round()
+            return
         self.__current_player_index = (
             self.__current_player_index + 1
         ) % len(self.players)

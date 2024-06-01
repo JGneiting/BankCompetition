@@ -1,12 +1,20 @@
+import sys
 import os
+
 import argparse
 
-from game import Game
-from entry import Entry
+sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
 
+from src.game import Game
+from src.entry import Entry
 
 if __name__ == "__main__":
+    # Add the src directory to sys.path
+
     arg_parser = argparse.ArgumentParser()
+
+    arg_parser.add_argument("num_games", help="The number of games.\n", type=int, default=1)
+
     arg_parser.add_argument("num_rounds", help="The number of rounds.\nOptions are: [10, 15, 20]",
                             type=int, choices=[10, 15, 20], default=10)
 
@@ -28,6 +36,8 @@ if __name__ == "__main__":
             except Exception as e:
                 print(f"Failed to import entry {entry_file}:", e)
 
+
     # run the game
-    game = Game(arg_parser.parse_args().num_rounds, *entries)
-    game.run()
+    for _ in range(arg_parser.parse_args().num_games):
+        game = Game(arg_parser.parse_args().num_rounds, *entries)
+        game.run()

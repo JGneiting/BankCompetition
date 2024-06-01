@@ -1,36 +1,37 @@
 import inspect
 import logging
-from typing import Callable
-
+from abc import ABC, abstractmethod
 from gamestate import GameState
 
 
 log = logging.getLogger(__name__)
 
 
-class Entry:
-    def __init__(self, name: str, func: Callable[[GameState], bool]) -> None:
+class Entry(ABC):
+    def __init__(self, name: str) -> None:
         self.name = name
-        self.func = func
+        if not self.is_valid():
+            raise ValueError(f"The function for {self.name} is not valid")
+
+    @abstractmethod
+    def bank(self, gamestate: GameState) -> bool:
+        pass
 
     def __validate__(self) -> bool:
-        # Check if it's callable
-        if not callable(self.func):
-            raise TypeError("The submitted object is not a function.")
+        # Get the function signature of the overridden func method
+        func_impl = self.__class__.__dict__.get('bank')
+        if func_impl is None:
+            raise TypeError("Derived class must implement the 'bank' method.")
 
-        # Get function signature
-        sig = inspect.signature(self.func)
+        sig = inspect.signature(func_impl)
 
-        # Check the number of parameters
-        if len(sig.parameters) != 1:
-            raise ValueError("Function must accept exactly one parameter.")
+        if len(sig.parameters) != 2:  # self and gamestate
+            raise ValueError("Function must accept exactly one parameter besides 'self'.")
 
-        # Check parameter type annotation
         params = list(sig.parameters.values())
-        if params[0].annotation is not GameState:
+        if params[1].annotation is not GameState:
             raise TypeError("Function parameter must be of type 'GameState'.")
 
-        # Optionally check return type
         if sig.return_annotation is not bool:
             raise TypeError("Function must return a boolean.")
 
