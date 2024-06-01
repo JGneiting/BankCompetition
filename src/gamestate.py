@@ -1,3 +1,4 @@
+import random
 from player import Player
 
 
@@ -21,6 +22,8 @@ class GameState:
             raise ValueError("Not enough players")
         self.current_player = self.players[self.__current_player_index]
         self.bank: int = 0
+        self.current_roll: tuple = (0, 0)
+        self.current_turn = 0
 
     def __str__(self) -> str:
         ret_str = f"Round: {self.current_round} of {self.num_rounds}\n"
@@ -36,6 +39,7 @@ class GameState:
     def next_round(self) -> None:
         self.bank = 0
         self.current_round += 1
+        self.current_turn = 0
         if self.current_round >= self.num_rounds:
             return
         for player in self.players:
@@ -61,3 +65,10 @@ class GameState:
     def get_results(self) -> list[Player]:
         results = sorted(self.players, key=lambda player: player.score, reverse=True)
         return results
+
+    def roll(self) -> tuple[int, int]:
+        dice1 = random.randint(1, 6)
+        dice2 = random.randint(1, 6)
+        self.current_roll = (dice1, dice2)
+        self.current_turn += 1
+        return self.current_roll
