@@ -2,7 +2,6 @@ import os
 import argparse
 
 from game import Game
-from entry import Entry
 
 
 if __name__ == "__main__":
