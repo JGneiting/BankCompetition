@@ -1,4 +1,3 @@
-import random
 import logging
 import copy
 
@@ -39,8 +38,7 @@ class Game:
 
     def roll(self) -> None:
         self.__current_turn += 1
-        dice1 = random.randint(1, 6)
-        dice2 = random.randint(1, 6)
+        dice1, dice2 = self.state.roll()
         if self.__current_turn < 4:
             if dice1 + dice2 == 7:
                 self.state.update_bank(70)
@@ -77,9 +75,12 @@ class Game:
             self.roll()
             self.poll()
 
-        results = self.state.get_results()
-        print(f"{results[0].name} wins with {results[0].score} points!")
-        print("Scores:")
-        for player in results:
-            print(f"{player.name}: {player.score}")
+        # results = self.state.get_results()
+        # print(f"{results[0].name} wins with {results[0].score} points!")
+        # print("Scores:")
+        # for player in results:
+        #     print(f"{player.name}: {player.score}")
         # TODO: export results to a file
+
+    def get_winner(self) -> Player:
+        return max(self.state.players, key=lambda player: player.score)
