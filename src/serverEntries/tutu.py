@@ -11,6 +11,7 @@ class TestEntry(ServerEntry):
         self.winning_at_start = None
 
     def bank(self, state: GameState) -> bool:
+        return True
         if state.current_round != self.current_round:
             self.current_round = state.current_round
             self.number_of_doubles = 0
@@ -90,4 +91,4 @@ def main(name: str) -> TestEntry:
 
 
 if __name__ == "__main__":
-    main("Tutu1151515")
+    main("Tut1141515")
