@@ -1,5 +1,5 @@
-from ..gamestate import GameState
-from ..ServerSubmission import ServerEntry
+from src.gamestate import GameState
+from src.ServerSubmission import ServerEntry
 
 
 class TestEntry(ServerEntry):

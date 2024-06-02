@@ -35,7 +35,7 @@ class ServerGame(Game):
         super().__init__(20, list(players.values()))
 
     def all_banked(self):
-        return all(player.banked for player in self.state.players)
+        return all(player.is_banked for player in self.state.players)
 
     def wait_for_responses(self):
         while not all(player.responded for player in self.state.players):
