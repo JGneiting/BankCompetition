@@ -26,6 +26,7 @@ class ServerRoom:
     def launch_game(self):
         print(f"Launching game with {len(self.players)}) players")
         self.game = ServerGame(self.players)
+        self.game.run()
 
 
 class ServerGame(Game):
