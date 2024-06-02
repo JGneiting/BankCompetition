@@ -53,11 +53,15 @@ class Game(ABC):
     def poll(self) -> None:
         pass
 
+    def end(self) -> None:
+        pass
+
     def run(self) -> None:
         while self.state.current_round < self.state.num_rounds:
             self.roll()
             self.poll()
 
+        self.end()
         # results = self.state.get_results()
         # print(f"{results[0].name} wins with {results[0].score} points!")
         # print("Scores:")
