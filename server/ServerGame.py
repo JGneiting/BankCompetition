@@ -13,7 +13,9 @@ class ServerRoom:
         self.game = None
 
     def add_player(self, id_, name):
+        print("Adding player to room")
         self.players[id_] = ServerPlayer(id_, name)
+        print(self.players)
 
     def remove_player(self, id_):
         del self.players[id_]
@@ -22,6 +24,7 @@ class ServerRoom:
         self.game.server_room[id_].save_response(message)
 
     def launch_game(self):
+        print(f"Launching game with {len(self.players)}) players")
         self.game = ServerGame(self.players)
 
 
