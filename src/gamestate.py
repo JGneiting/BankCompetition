@@ -94,7 +94,7 @@ class GameState:
 
         players = gamestate_dict.get("players", [])
         for player in players:
-            self.players.append(Player(player))
+            self.players.append(Player(player_json=player))
         if not self.players:
             raise ValueError("No players")
         if len(self.players) < 2:
