@@ -22,6 +22,9 @@ if __name__ == "__main__":
     wins = {}
     ties = {}
     scores = {}
+    total_scores = {}
+    average_scores = {}
+    median_scores = {}
     exclude = ["__init__.py", "test.py"]
     entries = get_entries("src/entries", exclude)
 
@@ -29,6 +32,8 @@ if __name__ == "__main__":
         wins[entry.name] = 0
         ties[entry.name] = 0
         scores[entry.name] = 0
+        total_scores[entry.name] = 0
+        median_scores[entry.name] = []
 
     # run the game
 
@@ -43,7 +48,17 @@ if __name__ == "__main__":
             for winner in winners:
                 ties[winner.name] += 1
                 scores[winner.name] += 0.5
+        for player in game.state.players:
+            total_scores[player.name] += player.score
+            median_scores[player.name].append(player.score)
+
+    for entry in entries:
+        average_scores[entry.name] = total_scores[entry.name] / arg_parser.parse_args().num_games
+        median_scores[entry.name] = sorted(median_scores[entry.name])[len(median_scores[entry.name]) // 2]
 
     print("Wins: ", wins)
     print("Ties: ", ties)
     print("Scores: ", scores)
+    print("Total Scores: ", total_scores)
+    print("Average Scores: ", average_scores)
+    print("Median Scores: ", median_scores)
