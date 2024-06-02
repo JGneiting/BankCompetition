@@ -41,6 +41,9 @@ class ServerGame(Game):
         for player in self.state.players:
             player.responded = False
 
+    def end(self):
+        server.socketio.emit("end", f"Game over! {self.state.get_results()}")
+
     def poll(self):
         if self.all_banked():
             self.state.next_round()

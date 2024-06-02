@@ -16,6 +16,7 @@ class ServerEntry(Entry):
         self.sio.on('response')(self.handle_response)
         self.sio.on('poll')(self.handle_poll)
         self.sio.on('agent_info')(self.handle_info)
+        self.sio.on('end')(self.disconnect)
 
     async def connect(self):
         await self.sio.connect(self.server, transports='websocket')
@@ -40,7 +41,8 @@ class ServerEntry(Entry):
         response = self.bank(state)
         await self.sio.emit('poll-response', response)
 
-    async def disconnect(self):
+    async def disconnect(self, message=""):
+        print(message)
         await self.sio.disconnect()
 
     """
