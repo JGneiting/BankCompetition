@@ -1,5 +1,5 @@
-from src.gamestate import GameState
-from src.ServerSubmission import ServerEntry
+from ..gamestate import GameState
+from ..ServerSubmission import ServerEntry
 
 
 class TestEntry(ServerEntry):
@@ -89,4 +89,5 @@ def main(name: str) -> TestEntry:
     entry.start()
 
 
-main("Tutu2")
+if __name__ == "__main__":
+    main("Tutu")
