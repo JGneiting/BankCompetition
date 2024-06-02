@@ -10,6 +10,7 @@ from src.gamestate import GameStateENCODER
 class ServerRoom:
     def __init__(self):
         self.players = {}
+        self.game = None
 
     def add_player(self, id_, name):
         self.players[id_] = ServerPlayer(name)
@@ -17,8 +18,11 @@ class ServerRoom:
     def remove_player(self, id_):
         del self.players[id_]
 
+    def message_received(self, id_, message):
+        self.game.server_room[id_].save_response(message)
+
     def launch_game(self):
-        ServerGame(self.players)
+        self.game = ServerGame(self.players)
 
 
 class ServerGame(Game):

@@ -14,6 +14,8 @@ class ServerEntry(Entry):
         self.server = server
         self.sio = socketio.AsyncClient()
         self.sio.on('response')(self.handle_response)
+        self.sio.on('poll')(self.handle_poll)
+        self.sio.on('agent_info')(self.handle_info)
 
     async def connect(self):
         await self.sio.connect(self.server, transports='websocket')
@@ -28,6 +30,15 @@ class ServerEntry(Entry):
 
     async def handle_response(self, message):
         print(message)
+
+    async def handle_info(self, message):
+        print(message)
+        await self.sio.emit('agent_info', f"{self.name}")
+
+    async def handle_poll(self, message):
+        state = GameState(gamestate_json=message)
+        response = self.bank(state)
+        await self.sio.emit('poll-response', response)
 
     async def disconnect(self):
         await self.sio.disconnect()
