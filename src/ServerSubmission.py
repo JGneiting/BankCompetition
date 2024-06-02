@@ -39,6 +39,10 @@ class ServerEntry(Entry):
     async def handle_poll(self, message):
         state = GameState(gamestate_json=message)
         response = self.bank(state)
+        if response == True:
+            response = "True"
+        else:
+            response = "False"
         await self.sio.emit('poll-response', response)
 
     async def disconnect(self, message=""):
