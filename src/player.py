@@ -3,7 +3,7 @@ from typing import Union
 
 
 class Player:
-    def __init__(self, name: str, player_json: Union[str, dict] = None) -> None:
+    def __init__(self, name: str = "", player_json: Union[str, dict] = None) -> None:
         if player_json is not None and isinstance(player_json, str):
             player_json = json.loads(player_json)
         elif player_json is not None and isinstance(player_json, dict):
