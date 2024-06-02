@@ -1,0 +1,5 @@
+
+
+
+class ServerPlayer:
+    pass
