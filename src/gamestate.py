@@ -84,7 +84,7 @@ class GameState:
         return self.current_roll
 
     def from_json(self, json_str: str) -> "GameState":
-        return GameState.from_dict(json.loads(json_str))
+        return self.from_dict(json.loads(json_str))
 
     def from_dict(self, gamestate_dict: dict) -> "GameState":
         self.current_round = gamestate_dict.get("current_round", 0)
