@@ -3,9 +3,9 @@ import copy
 import os
 from abc import ABC, abstractmethod
 
-from entry import Entry
-from player import Player
-from gamestate import GameState
+from src.entry import Entry
+from src.player import Player
+from src.gamestate import GameState
 
 
 log = logging.getLogger(__name__)

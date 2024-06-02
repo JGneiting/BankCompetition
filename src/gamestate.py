@@ -1,5 +1,5 @@
 import random
-from player import Player
+from src.player import Player
 import json
 
 from typing import Union
