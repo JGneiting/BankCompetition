@@ -5,9 +5,9 @@ from typing import Union
 class Player:
     def __init__(self, name: str = "", player_json: Union[str, dict] = None) -> None:
         if player_json is not None and isinstance(player_json, str):
-            player_json = json.loads(player_json)
+            self.from_json(player_json)
         elif player_json is not None and isinstance(player_json, dict):
-            player_json = json.dumps(player_json)
+            self.from_dict(player_json)
         else:
             self.name = name
             self.score = 0

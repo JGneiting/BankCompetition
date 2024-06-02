@@ -16,9 +16,9 @@ class GameState:
             gamestate_json (Union[str, dict], optional): game state json. Defaults to None.
         """
         if gamestate_json is not None and isinstance(gamestate_json, str):
-            gamestate_json = json.loads(gamestate_json)
+            self.from_json(gamestate_json)
         elif gamestate_json is not None and isinstance(gamestate_json, dict):
-            gamestate_json = json.dumps(gamestate_json)
+            self.from_dict(gamestate_json)
         else:
             self.current_round = 0
             self.num_rounds = num_rounds
@@ -87,7 +87,7 @@ class GameState:
         return GameState.from_dict(json.loads(json_str))
 
     def from_dict(self, gamestate_dict: dict) -> "GameState":
-        self.current_round = 0
+        self.current_round = gamestate_dict.get("current_round", 0)
         self.num_rounds = gamestate_dict.get("num_rounds", 0)
         self.__current_player_index = gamestate_dict.get("current_player_index", 0)
 
