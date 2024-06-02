@@ -1,11 +1,11 @@
 import server
-from flask import request
+from flask import request, render_template
 
 
 @server.app.route('/bankcompetition/home')
 def home():
     print("HELLO")
-    return "Hello, world!"
+    return render_template('Home.html')
 
 @server.app.route('/bankcompetition/launch')
 def launch():
