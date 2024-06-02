@@ -22,10 +22,13 @@ class ServerEntry(Entry):
         await self.sio.connect(self.server, transports='websocket')
 
     def start(self):
+        print("starting")
         asyncio.run(self.run())
 
     async def run(self):
+        print("Running")
         await self.connect()
+        print("connected")
         await self.sio.emit('agent_info', f"{self.name}")
         while self.run_game:
             await asyncio.sleep(0.1)

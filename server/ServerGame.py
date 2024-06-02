@@ -13,7 +13,7 @@ class ServerRoom:
         self.game = None
 
     def add_player(self, id_, name):
-        self.players[id_] = ServerPlayer(name)
+        self.players[id_] = ServerPlayer(id_, name)
 
     def remove_player(self, id_):
         del self.players[id_]
