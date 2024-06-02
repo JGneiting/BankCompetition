@@ -6,7 +6,7 @@ Welcome to the BANK competition! This project is a competitive game where partic
 
 1. **Gameplay**
     - The game consists of 20 rounds.
-    - Players take turns rolling dice during each round.
+    - Players take turns rolling two standard six-sided dice during each round.
 
 2. **Scoring**
     - Players may choose to 'Bank' at any time, which adds the current round's score to their total score and ends the round.
