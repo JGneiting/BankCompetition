@@ -90,6 +90,7 @@ class GameState:
         self.current_round = gamestate_dict.get("current_round", 0)
         self.num_rounds = gamestate_dict.get("num_rounds", 0)
         self.__current_player_index = gamestate_dict.get("current_player_index", 0)
+        self.players: list[Player] = []
 
         players = gamestate_dict.get("players", [])
         for player in players:
