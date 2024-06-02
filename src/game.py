@@ -16,7 +16,6 @@ class Game(ABC):
         """Initialize the game state."""
         self.__current_turn = 0
         self.state: GameState = None
-        players = copy.deepcopy(players)
 
         try:
             self.state = GameState(num_rounds, players)
@@ -66,8 +65,16 @@ class Game(ABC):
         #     print(f"{player.name}: {player.score}")
         # TODO: export results to a file
 
-    def get_winner(self) -> Player:
-        return max(self.state.players, key=lambda player: player.score)
+    def get_winner(self) -> list[Player]:
+        winners = []
+        highest_score = 0
+        for player in self.state.players:
+            if player.score > highest_score:
+                highest_score = player.score
+        for player in self.state.players:
+            if player.score == highest_score:
+                winners.append(player)
+        return winners
 
 
 def get_entries(path: str, exclude: list[str]) -> list[Entry]:

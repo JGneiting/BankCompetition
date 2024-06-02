@@ -10,7 +10,7 @@ if __name__ == "__main__":
 
     # search the entries directory for python files. Try to import a "main" function
     entries = []
-    exclude = ["__init__.py", "test.py"]
+    exclude = ["__init__.py", "test.py", "gradient.py"]
     entries = get_entries("src/entries", exclude)
 
     # run the game

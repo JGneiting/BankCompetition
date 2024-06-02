@@ -20,18 +20,30 @@ if __name__ == "__main__":
     # search the entries directory for python files. Try to import a "main" function
     entries = []
     wins = {}
-    exclude = ["__init__.py", "test.py", "the_leech.py"]
+    ties = {}
+    scores = {}
+    exclude = ["__init__.py", "test.py"]
     entries = get_entries("src/entries", exclude)
 
     for entry in entries:
         wins[entry.name] = 0
+        ties[entry.name] = 0
+        scores[entry.name] = 0
 
     # run the game
 
     for _ in range(arg_parser.parse_args().num_games):
         game = LocalGame(arg_parser.parse_args().num_rounds, *entries)
         game.run()
-        winner = game.get_winner()
-        wins[winner.name] += 1
+        winners = game.get_winner()
+        if len(winners) == 1:
+            wins[winners[0].name] += 1
+            scores[winners[0].name] += 1
+        elif len(winners) >= 0:
+            for winner in winners:
+                ties[winner.name] += 1
+                scores[winner.name] += 0.5
 
-    print(wins)
+    print("Wins: ", wins)
+    print("Ties: ", ties)
+    print("Scores: ", scores)
