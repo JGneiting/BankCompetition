@@ -7,6 +7,11 @@ def home():
     print("HELLO")
     return "Hello, world!"
 
+@server.app.route('/bankcompetition/launch')
+def launch():
+    server.room.launch_game()
+    return "Game launched"
+
 @server.socketio.on('connect')
 def handle_connect():
     print('connected')
