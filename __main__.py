@@ -16,6 +16,7 @@ if __name__ == "__main__":
 
     arg_parser.add_argument("num_rounds", help="The number of rounds.\nOptions are: [10, 15, 20]",
                             type=int, choices=[10, 15, 20], default=10)
+    arg_parser.add_argument("manual", help="Enable manual mode.\n", action="store_false", default=False)
 
     # search the entries directory for python files. Try to import a "main" function
     entries = []
@@ -26,6 +27,8 @@ if __name__ == "__main__":
     average_scores = {}
     median_scores = {}
     exclude = ["__init__.py", "test.py"]
+    if not arg_parser.parse_args().manual:
+        exclude.append("manual.py")
     entries = get_entries("src/entries", exclude)
 
     for entry in entries:
@@ -59,6 +62,6 @@ if __name__ == "__main__":
     print("Wins: ", wins)
     print("Ties: ", ties)
     print("Scores: ", scores)
-    print("Total Scores: ", total_scores)
-    print("Average Scores: ", average_scores)
-    print("Median Scores: ", median_scores)
+    # print("Total Scores: ", total_scores)
+    # print("Average Scores: ", average_scores)
+    # print("Median Scores: ", median_scores)

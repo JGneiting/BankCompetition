@@ -16,6 +16,7 @@ class Game(ABC):
         """Initialize the game state."""
         self.__current_turn = 0
         self.state: GameState = None
+        self.do_poll = True
 
         try:
             self.state = GameState(num_rounds, players)
@@ -46,6 +47,7 @@ class Game(ABC):
         self.state.advance_player()
 
     def next_round(self) -> None:
+        self.do_poll = False
         self.__current_turn = 0
         self.state.next_round()
 
@@ -58,8 +60,15 @@ class Game(ABC):
 
     def run(self) -> None:
         while self.state.current_round < self.state.num_rounds:
+            self.do_poll = True
             self.roll()
-            self.poll()
+            if any(x.name == "Manual" for x in self.state.players):
+                print(self.state)
+            if self.do_poll:
+                self.poll()
+            else:
+                if any(x.name == "Manual" for x in self.state.players):
+                    print("End of round.")
 
         self.end()
         # results = self.state.get_results()
