@@ -9,7 +9,7 @@ class Scrooge(Entry):
         super().__init__(name)
         self.current_round = 0
         self.roll_count = 0
-        self.print_debug_info = False  # Set this to True if you want to see debug information
+        self.print_debug_info = True  # Set this to True if you want to see debug information
 
     def bank(self, state: GameState) -> bool:
         if state.current_round != self.current_round:
@@ -26,7 +26,7 @@ class Scrooge(Entry):
         my_score = self.get_my_score(state)
         if self.print_debug_info:
             print(f"Round #: {self.current_round}, Roll #: {self.roll_count}, Current score: {my_score}, Dice : ({state.current_roll[0]}, {state.current_roll[1]})")
-        self.roll_count += 1
+        self.roll_count += 1  #FIXME: Use state.current_roll to get the current roll.
         if self.roll_count <= 2:
             if self.print_debug_info:
                 print(f"Banking False")
