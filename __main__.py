@@ -16,7 +16,9 @@ if __name__ == "__main__":
 
     arg_parser.add_argument("num_rounds", help="The number of rounds.\nOptions are: [10, 15, 20]",
                             type=int, choices=[10, 15, 20], default=10)
-    arg_parser.add_argument("manual", help="Enable manual mode.\n", action="store_false", default=False)
+    arg_parser.add_argument("-m", "--manual", help="Enable manual mode.\n", action="store_true", default=False)
+
+    args = arg_parser.parse_args()
 
     # search the entries directory for python files. Try to import a "main" function
     entries = []
@@ -27,7 +29,7 @@ if __name__ == "__main__":
     average_scores = {}
     median_scores = {}
     exclude = ["__init__.py", "test.py"]
-    if not arg_parser.parse_args().manual:
+    if not args.manual:
         exclude.append("manual.py")
     entries = get_entries("src/entries", exclude)
 
@@ -40,8 +42,8 @@ if __name__ == "__main__":
 
     # run the game
 
-    for _ in range(arg_parser.parse_args().num_games):
-        game = LocalGame(arg_parser.parse_args().num_rounds, *entries)
+    for _ in range(args.num_games):
+        game = LocalGame(args.num_rounds, *entries)
         game.run()
         winners = game.get_winner()
         if len(winners) == 1:
