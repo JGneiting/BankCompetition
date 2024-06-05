@@ -9,7 +9,7 @@ class Scrooge(Entry):
         super().__init__(name)
         self.current_round = 0
         self.current_turn = 0
-        self.print_debug_info = True  # Set this to True if you want to see debug information
+        self.print_debug_info = False  # Set this to True if you want to see debug information
 
     def bank(self, state: GameState) -> bool:
         if state.current_round != self.current_round:
