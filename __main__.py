@@ -65,5 +65,5 @@ if __name__ == "__main__":
     print("Ties: ", ties)
     print("Scores: ", scores)
     # print("Total Scores: ", total_scores)
-    # print("Average Scores: ", average_scores)
+    print("Average Scores: ", average_scores)
     # print("Median Scores: ", median_scores)
