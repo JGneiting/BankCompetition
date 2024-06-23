@@ -1,10 +1,9 @@
 import time
 from server.ServerPlayer import ServerPlayer
-from src.player import Player
-from src.game import Game
+from bankcompetition.src.bankcompetition.game import Game
 import server
 import json
-from src.gamestate import GameStateENCODER
+from bankcompetition.src.bankcompetition.gamestate import GameStateENCODER
 
 
 class ServerRoom:

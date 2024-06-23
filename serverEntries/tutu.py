@@ -1,5 +1,7 @@
-from src.gamestate import GameState
-from src.ServerSubmission import ServerEntry
+import random
+
+from bankcompetition.src.bankcompetition.gamestate import GameState
+from bankcompetition.src.bankcompetition.ServerSubmission import ServerEntry
 
 
 class TestEntry(ServerEntry):
@@ -91,4 +93,4 @@ def main(name: str) -> TestEntry:
 
 
 if __name__ == "__main__":
-    main("Tut1141515")
+    main(f"Tutu{random.randint(0, 1000)}")

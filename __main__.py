@@ -5,7 +5,7 @@ import argparse
 
 sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
 
-from src.game import LocalGame, get_entries  # noqa: E402
+from bankcompetition.src.bankcompetition.game import LocalGame, get_entries  # noqa: E402
 
 if __name__ == "__main__":
     # Add the src directory to sys.path
@@ -26,7 +26,7 @@ if __name__ == "__main__":
     average_scores = {}
     median_scores = {}
     exclude = ["__init__.py", "test.py"]
-    entries = get_entries("src/entries", exclude)
+    entries = get_entries("entries", exclude)
 
     for entry in entries:
         wins[entry.name] = 0

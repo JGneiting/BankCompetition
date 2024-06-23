@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bankcompetition"
+version = "0.1.0"
+description = "A description of your bank competition project"
+authors = [
+    { name = "Joshua Gneiting", email = "gneitingj9@gmail.com" }
+]
+dependencies = [
+
+]
+requires-python = ">=3.6"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+urls = { "Homepage" = "https://github.com/JGneiting/BankCompetition.git" }  # Replace with your project's URL
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.scripts]
+# Define scripts here if needed

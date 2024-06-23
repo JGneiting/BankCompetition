@@ -1,5 +1,5 @@
 import random
-from src.player import Player
+from bankcompetition.src.bankcompetition.player import Player
 import json
 
 from typing import Union
@@ -38,7 +38,7 @@ class GameState:
     def __str__(self) -> str:
         ret_str = f"Round: {self.current_round} of {self.num_rounds}\n"
         ret_str += "Bank: " + str(self.bank) + "\n"
-        ret_str += "Current player: " + self.current_player.name + "\n"
+        # ret_str += "Current player: " + self.current_player.name + "\n"
         for player in self.players:
             ret_str += player.__str__() + "\n"
         return ret_str

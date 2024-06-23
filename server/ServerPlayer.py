@@ -1,4 +1,4 @@
-from src.player import Player
+from bankcompetition.src.bankcompetition.player import Player
 
 
 class ServerPlayer(Player):

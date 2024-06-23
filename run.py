@@ -1,3 +1,3 @@
-from src.serverEntries.tutu import main
+from bankcompetition import main
 
 main("Tutu")

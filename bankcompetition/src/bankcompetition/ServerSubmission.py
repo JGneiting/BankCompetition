@@ -1,10 +1,7 @@
-import logging
-from abc import ABC
-from src.entry import Entry
+from bankcompetition.src.bankcompetition.entry import Entry
 import asyncio
 import socketio
-from src.gamestate import GameState
-import ssl
+from bankcompetition.src.bankcompetition.gamestate import GameState
 
 
 class ServerEntry(Entry):
@@ -31,13 +28,14 @@ class ServerEntry(Entry):
         print("connected")
         await self.sio.emit('agent_info', f"{self.name}")
         while self.run_game:
-            await asyncio.sleep(0.1)
+            await asyncio.sleep(0.01)
 
     async def handle_response(self, message):
         print(message)
 
     async def handle_poll(self, message):
         state = GameState(gamestate_json=message)
+        print(state)
         response = self.bank(state)
         if response == True:
             response = "True"
