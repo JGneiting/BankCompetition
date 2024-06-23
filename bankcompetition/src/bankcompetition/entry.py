@@ -1,7 +1,7 @@
 import inspect
 import logging
 from abc import ABC, abstractmethod
-from bankcompetition.src.bankcompetition.gamestate import GameState
+from bankcompetition.gamestate import GameState
 
 
 log = logging.getLogger(__name__)
