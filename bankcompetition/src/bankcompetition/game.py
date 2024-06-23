@@ -12,10 +12,14 @@ log = logging.getLogger(__name__)
 
 
 class Game(ABC):
-    def __init__(self, num_rounds: int, players: list[Player]) -> None:
+    def __init__(self, num_rounds: int, players: list[Player], **kwargs) -> None:
         """Initialize the game state."""
         self.__current_turn = 0
         self.state: GameState = None
+        self.do_poll = True
+
+        # for player in players:
+        #     print(player)
 
         try:
             self.state = GameState(num_rounds, players)
@@ -46,6 +50,7 @@ class Game(ABC):
         self.state.advance_player()
 
     def next_round(self) -> None:
+        self.do_poll = False
         self.__current_turn = 0
         self.state.next_round()
 
@@ -58,8 +63,15 @@ class Game(ABC):
 
     def run(self) -> None:
         while self.state.current_round < self.state.num_rounds:
+            self.do_poll = True
             self.roll()
-            self.poll()
+            if any(x.name == "Manual" for x in self.state.players):
+                print(self.state)
+            if self.do_poll:
+                self.poll()
+            else:
+                if any(x.name == "Manual" for x in self.state.players):
+                    print("End of round.")
 
         self.end()
         # results = self.state.get_results()
@@ -103,19 +115,19 @@ def get_entries(path: str, exclude: list[str]) -> list[Entry]:
 
 
 class LocalGame(Game):
-    def __init__(self, num_rounds: int, *entries: Entry) -> None:
+    def __init__(self, num_rounds: int, *entries: Entry, **kwargs) -> None:
         players = []
-        self.__entries = []
+        self._entries = []
         for entry in entries:
             try:
                 entry.is_valid()
-                self.__entries.append(entry)
+                self._entries.append(entry)
                 players.append(Player(entry.name))
                 log.info("Entry passed validation: %s", entry)
                 log.info("Player added: %s", entry.name)
             except Exception as e:
                 log.warning("Entry failed validation: %s", entry, exc_info=e)
-        super().__init__(num_rounds, players)
+        super().__init__(num_rounds, players, **kwargs)
 
     def poll(self) -> None:
         if all(self.state.players):
@@ -124,7 +136,7 @@ class LocalGame(Game):
         poll_again = False
         for i, player in enumerate(self.state.players):
             if not player.is_banked:
-                if self.__entries[i].bank(copy.deepcopy(self.state)):
+                if self._entries[i].bank(copy.deepcopy(self.state)):
                     self.state.players[i].bank(self.state.bank)
                     poll_again = True
         if poll_again:

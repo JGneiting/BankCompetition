@@ -36,9 +36,10 @@ class GameState:
             self.current_turn = 0
 
     def __str__(self) -> str:
-        ret_str = f"Round: {self.current_round} of {self.num_rounds}\n"
+        ret_str = f"Round: {self.current_round + 1} of {self.num_rounds}\n"
         ret_str += "Bank: " + str(self.bank) + "\n"
-        # ret_str += "Current player: " + self.current_player.name + "\n"
+        ret_str += "Current roll: " + str(self.current_roll) + "\n"
+        ret_str += "Current player: " + self.current_player.name + "\n"
         for player in self.players:
             ret_str += player.__str__() + "\n"
         return ret_str
