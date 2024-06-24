@@ -5,7 +5,7 @@ import argparse
 
 sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
 
-from bankcompetition.src.bankcompetition.game import LocalGame, get_entries  # noqa: E402
+from BankCompetition.bankcompetition.src.bankcompetition.game import LocalGame, get_entries  # noqa: E402
 
 if __name__ == "__main__":
     # Add the src directory to sys.path

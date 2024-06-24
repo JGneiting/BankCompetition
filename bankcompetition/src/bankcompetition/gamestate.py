@@ -1,5 +1,5 @@
 import random
-from bankcompetition.src.bankcompetition.player import Player
+from bankcompetition.player import Player
 import json
 
 from typing import Union

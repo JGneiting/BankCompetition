@@ -1,7 +1,7 @@
-from bankcompetition.src.bankcompetition.entry import Entry
+from bankcompetition.entry import Entry
 import asyncio
 import socketio
-from bankcompetition.src.bankcompetition.gamestate import GameState
+from bankcompetition.gamestate import GameState
 
 
 class ServerEntry(Entry):
