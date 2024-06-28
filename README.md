@@ -23,48 +23,30 @@ Welcome to the BANK competition! This project is a competitive game where partic
 
 ## Creating an Agent
 
-To participate in the competition, you must create an agent. Your agent will be a Python class that inherits from a base class located in the 'agents' directory. The agent must override the `decision` function, which will be called with the game state and must return a boolean indicating whether the player wishes to bank or not.
+1. **Installing**
+    First, you need to install the bank competition package. to do this, run the following command
+    ```bash
+     pip install git+https://github.com/JGneiting/BankCompetition.git@main#egg=bankcompetition&subdirectory=bankcompetition
+     ```
+2. **Creating your Agent**
+   To create an agent, start with the base class provided. You cannot remove the bank function but are free to make any other modifications to make your agent work.
+   ```python
+   from bankcompetition.entry import Entry
 
-### Example Agent
 
-Here is a simple example of an agent:
-
-```python
-# agents/simple_agent.py
-
-from base_agent import BaseAgent
-
-class SimpleAgent(BaseAgent):
-    def decision(self, game_state):
-        # Implement your decision logic here
-        # For example, bank if the current round's score is higher than 100
-        if game_state['current_round_score'] > 100:
+    class TestEntry(Entry):
+        def __init__(self, name: str):
+            super().__init__(name)
+    
+        def bank(self, state) -> bool:
             return True
-        return False
-```
-
-### Game State
-
-The `decision` function receives the game state as a dictionary. The exact structure of this dictionary will be provided in the base class documentation.
-
-## Entering the Competition
-
-To enter the competition, visit our competition website at:
-
-```
-https://bakerbot3000/bankcompetition
-```
-
-Submitted agents will compete on competition day
-
-## Repository Structure
-
-```
-/agents           # Directory containing agent implementations
-    /base_agent.py  # Base agent class to be inherited by participant agents
-    /simple_agent.py # Example agent
-/README.md         # This README file
-```
+    
+    
+    def main(name: str) -> Entry:
+        return TestEntry(name)
+   ```
+3. **Uploading your Agent**
+   To upload your agent, first visit the competition website and create an account. From here, you can upload agents from your dashboard. You need to have the starter code inside a file titled ```main.py```. Have any other python files or data in the same folder, and upload the entire folder to the server. If there are no issues and validation passes, your entry has been successfully submitted and will compete in the next competition!
 
 ## How to Contribute
 
