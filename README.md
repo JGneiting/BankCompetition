@@ -46,7 +46,7 @@ Welcome to the BANK competition! This project is a competitive game where partic
         return TestEntry(name)
    ```
 3. **Uploading your Agent**
-   To upload your agent, first visit the competition website and create an account. From here, you can upload agents from your dashboard. You need to have the starter code inside a file titled ```main.py```. Have any other python files or data in the same folder, and upload the entire folder to the server. If there are no issues and validation passes, your entry has been successfully submitted and will compete in the next competition!
+   To upload your agent, first visit the [competition website](https://bakerbot3000.com/bankcompetition/) and create an account. From here, you can upload agents from your dashboard. You need to have the starter code inside a file titled ```main.py```. Have any other python files or data in the same folder, and upload the entire folder to the server. If there are no issues and validation passes, your entry has been successfully submitted and will compete in the next competition!
 
 ## How to Contribute
 
