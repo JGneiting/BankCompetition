@@ -49,13 +49,13 @@ The `decision` function receives the game state as a dictionary. The exact struc
 
 ## Entering the Competition
 
-To enter the competition, run your agent on your local machine and connect to the competition URL:
+To enter the competition, visit our competition website at:
 
 ```
-https://bakerbot3000/bankcompetition/enter
+https://bakerbot3000/bankcompetition
 ```
 
-Other agents will connect to this URL as well, and the server will be responsible for running the game and keeping track of scores.
+Submitted agents will compete on competition day
 
 ## Repository Structure
 
