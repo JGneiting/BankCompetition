@@ -1,17 +1,18 @@
 import inspect
 import logging
 from abc import ABC, abstractmethod
-from bankcompetition.gamestate import GameState
+from .gamestate import GameState
 
 
 log = logging.getLogger(__name__)
 
 
 class Entry(ABC):
-    def __init__(self, name: str) -> None:
+    def __init__(self, name: str, id=None) -> None:
         self.name = name
         if not self.is_valid():
             raise ValueError(f"The function for {self.name} is not valid")
+        self.id = id  # if not assigned now, will be assigned at runtime
 
     @abstractmethod
     def bank(self, gamestate: GameState) -> bool:

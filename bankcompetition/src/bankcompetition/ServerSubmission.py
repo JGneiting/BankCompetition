@@ -1,7 +1,7 @@
-from bankcompetition.entry import Entry
+from .entry import Entry
 import asyncio
 import socketio
-from bankcompetition.gamestate import GameState
+from .gamestate import GameState
 
 
 class ServerEntry(Entry):
@@ -37,7 +37,7 @@ class ServerEntry(Entry):
         state = GameState(gamestate_json=message)
         print(state)
         response = self.bank(state)
-        if response == True:
+        if response is True:
             response = "True"
         else:
             response = "False"
@@ -54,7 +54,7 @@ class ServerEntry(Entry):
     """
     def bank(self, gamestate: GameState) -> bool:
         return True
-        
+
 
 if __name__ == "__main__":
     entry = ServerEntry("Server")

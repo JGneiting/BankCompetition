@@ -1,11 +1,13 @@
 import logging
 import copy
 import os
+import importlib.util
+import uuid
 from abc import ABC, abstractmethod
 
-from bankcompetition.entry import Entry
-from bankcompetition.player import Player
-from bankcompetition.gamestate import GameState
+from .entry import Entry
+from .player import Player
+from .gamestate import GameState
 
 
 log = logging.getLogger(__name__)
@@ -95,16 +97,17 @@ class Game(ABC):
 
 def get_entries(path: str, exclude: list[str]) -> list[Entry]:
     entries = []
-    for entry_file in os.listdir("src/entries"):
+    for entry_file in os.listdir(path):
         if entry_file.endswith(".py") and entry_file not in exclude:
-            try:
-                # Import the module dynamically
-                module_name = entry_file[:-3]  # Strip ".py" extension
-                module = __import__(f"entries.{module_name}", globals(), locals(), ["main"])
+            module_name = entry_file[:-3]
+            module_path = os.path.join(path, entry_file)
 
-                # Check if the module has a main function
+            spec = importlib.util.spec_from_file_location(module_name, module_path)
+            module = importlib.util.module_from_spec(spec)
+
+            try:
+                spec.loader.exec_module(module)
                 if hasattr(module, "main"):
-                    # Call the main function with the name derived from the file path
                     entry_name = module_name.capitalize()  # or use any other naming convention
                     entry_instance = module.main(entry_name)
                     entries.append(entry_instance)
@@ -121,6 +124,8 @@ class LocalGame(Game):
         for entry in entries:
             try:
                 entry.is_valid()
+                if not entry.id:
+                    entry.id = uuid.uuid4()
                 self._entries.append(entry)
                 players.append(Player(entry.name))
                 log.info("Entry passed validation: %s", entry)

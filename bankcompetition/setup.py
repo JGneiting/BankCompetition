@@ -8,6 +8,8 @@ setup(
     author_email="gneitingj9@gmail.com",
     url="https://github.com/JGneiting/BankCompetition.git",
     packages=find_packages(where="src"),
+    # packages=['bankcompetition', 'bankcompetition.src', 'bankcompetition.src.gamestate',
+    #           'bankcompetition.src.entry', 'bankcompetition.src.game', 'bankcompetition.src.player'],
     python_requires=">=3.6",
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -17,7 +19,7 @@ setup(
     install_requires=[],
     entry_points={
         "console_scripts": [
-            # Define console scripts here if needed
+            "bankcompetition=bankcompetition.src.__main__:main",
         ],
     },
 )
